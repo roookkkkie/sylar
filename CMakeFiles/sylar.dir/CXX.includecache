@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/lipei/myweb/sylar/log.cc
+log.h
+/home/lipei/myweb/sylar/log.h
+iostream
+-
+functional
+-
+time.h
+-
+string.h
+-
+
+/home/lipei/myweb/sylar/log.h
+string
+-
+stdint.h
+-
+memory
+-
+list
+-
+sstream
+-
+fstream
+-
+vector
+-
+stdarg.h
+-
+map
+-
+
