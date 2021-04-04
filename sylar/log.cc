@@ -68,9 +68,18 @@ namespace sylar{
 	};
 	class DateTimeFormatItem:public LogFormatter::FormatItem{
 		public:
-			DateTimeFormatItem(const std::string& format="%Y:%m:%d %H%M%S"):m_format(format){}
+			DateTimeFormatItem(const std::string& format="%Y-%m-%d %H:%M:%S"):m_format(format){
+				if(m_format.empty()){
+					m_format = "%Y-%m-%d %H:%M:%S";
+				}
+			}
 			void format(std::ostream& os,Logger::ptr logger,LogLevel::Level level,LogEvent::ptr event)override{
-				os<<event->getTime();
+				struct tm tm;
+				time_t time = event->getTime();
+				localtime_r(&time,&tm);
+				char buf[64];
+				strftime(buf,sizeof(buf),m_format.c_str(),&tm);
+				os<<buf;
 			}
 		private:
 			std::string m_format;
@@ -106,12 +115,22 @@ namespace sylar{
 			std::string m_string;
 	};
 
+	class TabFormatItem:public LogFormatter::FormatItem{
+		public:
+			TabFormatItem(const std::string& str = ""){}
+			void format(std::ostream& os,Logger::ptr logger,LogLevel::Level level,LogEvent::ptr event)override{
+				os<<"\t";
+			}
+		private:
+			std::string m_string;
+	};
+
 	LogEvent::LogEvent(const char* file,int32_t line,uint32_t elapse,uint32_t threadId,uint32_t fiberId,uint64_t time):
 		m_file(file),m_line(line),m_elapse(elapse),m_threadId(threadId),m_fiberId(fiberId),m_time(time){}
 	Logger::Logger(const std::string& name):
 		m_name(name),
 		m_level(LogLevel::DEBUG){
-			m_formatter.reset(new LogFormatter("%d [%p] <%f:%l> %m %n"));
+			m_formatter.reset(new LogFormatter("%d{%Y-%m-%d %H:%M:%S}%T%t%T%F%T[%p]%T[%c]%f:%l%T%m%n"));
 		}
 	void Logger::addAppender(LogAppender::ptr appender){
 		if(!appender->getFormatter()){
@@ -207,47 +226,52 @@ namespace sylar{
 			std::string str;
 			std::string fmt;
 			while(n<m_pattern.size()){
-				if(isspace(m_pattern[n])){
+				if(!fmt_status && (!isalpha(m_pattern[n]) && m_pattern[n] != '{'
+							&& m_pattern[n] != '}')) {
+					str = m_pattern.substr(i + 1, n - i - 1);
 					break;
 				}
 				if(fmt_status == 0){
 					if(m_pattern[n]=='{'){
 						str = m_pattern.substr(i+1,n-i-1);
 						fmt_status = 1;//解析格式
+						fmt_begin = n;
 						++n;
 						continue;
 					}
 				}
-				if(fmt_status == 1){
+				else if(fmt_status == 1){
 					if(m_pattern[n] == '}'){
 						fmt = m_pattern.substr(fmt_begin+1,n-fmt_begin-1);
-						fmt_status = 2;
+						fmt_status = 0;
+						++n;
 						break;
 					}
 				}
 				++n;
+				if(n == m_pattern.size()){
+					if(str.empty()){
+						str = m_pattern.substr(i+1);
+					}
+				}
 			}
+
 			if(fmt_status == 0){
 				if(!nstr.empty()){
-					vec.push_back(std::make_tuple(nstr,"",0));
+					vec.push_back(std::make_tuple(nstr,std::string(),0));
 					nstr.clear();
 				}
-				str = m_pattern.substr(i+1,n-i-1);
 				vec.push_back(std::make_tuple(str,fmt,1));
 				i = n - 1;
 			}
 			else if(fmt_status == 1){
-				std::cout<<"pattern parse error: "<<m_pattern<<" = "<<m_pattern[i]<<std::endl;
+				std::cout<<"pattern parse error: "<<m_pattern<<" - "<<m_pattern.substr(i)<<std::endl;
 				vec.push_back(std::make_tuple("<<pattern error>>",fmt,0));
 			}
-			else if(fmt_status == 2){
-				vec.push_back(std::make_tuple(str,fmt,1));
-				i = n - 1;
-			}
 		}
+
 		if(!nstr.empty()){
 			vec.push_back(make_tuple(nstr,"",0));
-			nstr.clear();
 		}
 		static std::map<std::string,std::function<FormatItem::ptr(const std::string& str)> > s_format_items={
 #define XX(str,C) \
@@ -256,12 +280,16 @@ namespace sylar{
 			XX(p,LevelFormatItem),
 			XX(r,ElapseFormatItem),
 			XX(c,NameFormatItem),
+			XX(t, ThreadIdFormatItem),
 			XX(n,NewLineFormatItem),
 			XX(d,DateTimeFormatItem),
 			XX(f,FilenameFormatItem),
 			XX(l,LineFormatItem),
+			XX(T,TabFormatItem),
+			XX(F,FiberIdFormatItem),
 #undef XX
 		};
+
 		for(auto &i:vec){
 			if(std::get<2>(i)==0){
 				m_items.push_back(FormatItem::ptr(new StringFormatItem(std::get<0>(i))));
@@ -273,7 +301,7 @@ namespace sylar{
 					m_items.push_back(it->second(std::get<1>(i)));
 				}
 			}	
-			std::cout<<std::get<0>(i)<<" - "<<std::get<1>(i)<<" - "<<std::get<2>(i)<<std::endl;
+			//std::cout<<"("<<std::get<0>(i)<<") - ("<<std::get<1>(i)<<") - ("<<std::get<2>(i)<<")"<<std::endl;
 		}
 	}
 }
