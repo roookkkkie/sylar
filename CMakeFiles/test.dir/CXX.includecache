@@ -25,10 +25,30 @@ stdarg.h
 -
 map
 -
+util.h
+/home/lipei/myweb/sylar/util.h
+singleton.h
+/home/lipei/myweb/sylar/singleton.h
+
+/home/lipei/myweb/sylar/singleton.h
+
+/home/lipei/myweb/sylar/util.h
+pthread.h
+-
+sys/types.h
+-
+sys/syscall.h
+-
+unistd.h
+-
+stdint.h
+-
 
 /home/lipei/myweb/tests/test.cc
 iostream
 -
 ../sylar/log.h
 /home/lipei/myweb/sylar/log.h
+../sylar/util.h
+/home/lipei/myweb/sylar/util.h
 

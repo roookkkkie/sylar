@@ -4,7 +4,9 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/lipei/myweb/sylar/config.cc" "/home/lipei/myweb/CMakeFiles/sylar.dir/sylar/config.cc.o"
   "/home/lipei/myweb/sylar/log.cc" "/home/lipei/myweb/CMakeFiles/sylar.dir/sylar/log.cc.o"
+  "/home/lipei/myweb/sylar/util.cc" "/home/lipei/myweb/CMakeFiles/sylar.dir/sylar/util.cc.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -15,6 +17,7 @@ set(CMAKE_TARGET_DEFINITIONS_CXX
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
+  "."
   )
 
 # Targets to which this target links.

@@ -6,16 +6,36 @@
 
 #IncludeRegexTransform: 
 
-/home/lipei/myweb/sylar/log.cc
+/home/lipei/myweb/sylar/config.cc
+config.h
+/home/lipei/myweb/sylar/config.h
+
+/home/lipei/myweb/sylar/config.h
+memory
+-
+sstream
+-
+boost/lexical_cast.hpp
+-
+vector
+-
+list
+-
+set
+-
+map
+-
+unordered_map
+-
+unordered_set
+-
 log.h
 /home/lipei/myweb/sylar/log.h
-iostream
+util.h
+/home/lipei/myweb/sylar/util.h
+yaml-cpp/yaml.h
 -
 functional
--
-time.h
--
-string.h
 -
 
 /home/lipei/myweb/sylar/log.h
@@ -36,5 +56,23 @@ vector
 stdarg.h
 -
 map
+-
+util.h
+/home/lipei/myweb/sylar/util.h
+singleton.h
+/home/lipei/myweb/sylar/singleton.h
+
+/home/lipei/myweb/sylar/singleton.h
+
+/home/lipei/myweb/sylar/util.h
+pthread.h
+-
+sys/types.h
+-
+sys/syscall.h
+-
+unistd.h
+-
+stdint.h
 -
 

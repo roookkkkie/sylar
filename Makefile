@@ -114,6 +114,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named test_config
+
+# Build rule for target.
+test_config: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 test_config
+.PHONY : test_config
+
+# fast build rule for target.
+test_config/fast:
+	$(MAKE) -f CMakeFiles/test_config.dir/build.make CMakeFiles/test_config.dir/build
+.PHONY : test_config/fast
+
+#=============================================================================
 # Target rules for targets named test
 
 # Build rule for target.
@@ -138,6 +151,33 @@ sylar: cmake_check_build_system
 sylar/fast:
 	$(MAKE) -f CMakeFiles/sylar.dir/build.make CMakeFiles/sylar.dir/build
 .PHONY : sylar/fast
+
+sylar/config.o: sylar/config.cc.o
+
+.PHONY : sylar/config.o
+
+# target to build an object file
+sylar/config.cc.o:
+	$(MAKE) -f CMakeFiles/sylar.dir/build.make CMakeFiles/sylar.dir/sylar/config.cc.o
+.PHONY : sylar/config.cc.o
+
+sylar/config.i: sylar/config.cc.i
+
+.PHONY : sylar/config.i
+
+# target to preprocess a source file
+sylar/config.cc.i:
+	$(MAKE) -f CMakeFiles/sylar.dir/build.make CMakeFiles/sylar.dir/sylar/config.cc.i
+.PHONY : sylar/config.cc.i
+
+sylar/config.s: sylar/config.cc.s
+
+.PHONY : sylar/config.s
+
+# target to generate assembly for a file
+sylar/config.cc.s:
+	$(MAKE) -f CMakeFiles/sylar.dir/build.make CMakeFiles/sylar.dir/sylar/config.cc.s
+.PHONY : sylar/config.cc.s
 
 sylar/log.o: sylar/log.cc.o
 
@@ -166,6 +206,33 @@ sylar/log.cc.s:
 	$(MAKE) -f CMakeFiles/sylar.dir/build.make CMakeFiles/sylar.dir/sylar/log.cc.s
 .PHONY : sylar/log.cc.s
 
+sylar/util.o: sylar/util.cc.o
+
+.PHONY : sylar/util.o
+
+# target to build an object file
+sylar/util.cc.o:
+	$(MAKE) -f CMakeFiles/sylar.dir/build.make CMakeFiles/sylar.dir/sylar/util.cc.o
+.PHONY : sylar/util.cc.o
+
+sylar/util.i: sylar/util.cc.i
+
+.PHONY : sylar/util.i
+
+# target to preprocess a source file
+sylar/util.cc.i:
+	$(MAKE) -f CMakeFiles/sylar.dir/build.make CMakeFiles/sylar.dir/sylar/util.cc.i
+.PHONY : sylar/util.cc.i
+
+sylar/util.s: sylar/util.cc.s
+
+.PHONY : sylar/util.s
+
+# target to generate assembly for a file
+sylar/util.cc.s:
+	$(MAKE) -f CMakeFiles/sylar.dir/build.make CMakeFiles/sylar.dir/sylar/util.cc.s
+.PHONY : sylar/util.cc.s
+
 tests/test.o: tests/test.cc.o
 
 .PHONY : tests/test.o
@@ -193,6 +260,33 @@ tests/test.cc.s:
 	$(MAKE) -f CMakeFiles/test.dir/build.make CMakeFiles/test.dir/tests/test.cc.s
 .PHONY : tests/test.cc.s
 
+tests/test_config.o: tests/test_config.cc.o
+
+.PHONY : tests/test_config.o
+
+# target to build an object file
+tests/test_config.cc.o:
+	$(MAKE) -f CMakeFiles/test_config.dir/build.make CMakeFiles/test_config.dir/tests/test_config.cc.o
+.PHONY : tests/test_config.cc.o
+
+tests/test_config.i: tests/test_config.cc.i
+
+.PHONY : tests/test_config.i
+
+# target to preprocess a source file
+tests/test_config.cc.i:
+	$(MAKE) -f CMakeFiles/test_config.dir/build.make CMakeFiles/test_config.dir/tests/test_config.cc.i
+.PHONY : tests/test_config.cc.i
+
+tests/test_config.s: tests/test_config.cc.s
+
+.PHONY : tests/test_config.s
+
+# target to generate assembly for a file
+tests/test_config.cc.s:
+	$(MAKE) -f CMakeFiles/test_config.dir/build.make CMakeFiles/test_config.dir/tests/test_config.cc.s
+.PHONY : tests/test_config.cc.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -200,15 +294,25 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... test_config"
 	@echo "... edit_cache"
 	@echo "... test"
 	@echo "... sylar"
+	@echo "... sylar/config.o"
+	@echo "... sylar/config.i"
+	@echo "... sylar/config.s"
 	@echo "... sylar/log.o"
 	@echo "... sylar/log.i"
 	@echo "... sylar/log.s"
+	@echo "... sylar/util.o"
+	@echo "... sylar/util.i"
+	@echo "... sylar/util.s"
 	@echo "... tests/test.o"
 	@echo "... tests/test.i"
 	@echo "... tests/test.s"
+	@echo "... tests/test_config.o"
+	@echo "... tests/test_config.i"
+	@echo "... tests/test_config.s"
 .PHONY : help
 
 
