@@ -92,7 +92,7 @@ void test_config() {
     XX_M(g_str_int_map_value_config, str_int_map, before);
     XX_M(g_str_int_umap_value_config, str_int_umap, before);
 
-   	YAML::Node root = YAML::LoadFile("/home/lipei/myweb/bin/conf/log.yml");
+   	YAML::Node root = YAML::LoadFile("/home/lipei/myweb/bin/conf/test.yml");
     sylar::Config::LoadFromYaml(root);
 
     //SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "after: " << g_int_value_config->getValue();
@@ -179,7 +179,7 @@ void test_class() {
         } \
         SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) <<  prefix << ": size=" << m.size(); \
     }
-    g_person->addListener(10,[](const Person& old_value, const Person& new_value){
+    g_person->addListener([](const Person& old_value, const Person& new_value){
         SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "old_value=" << old_value.toString()
                 << " new_value=" << new_value.toString();
     });
@@ -195,13 +195,13 @@ void test_class() {
     SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "after: " << g_person_vec_map->toString();
 }
 
-#if 0
+#if 1
 void test_log() {
     static sylar::Logger::ptr system_log = SYLAR_LOG_NAME("system");
     SYLAR_LOG_INFO(system_log) << "hello system" << std::endl;
     std::cout << sylar::LoggerMgr::GetInstance()->toYamlString() << std::endl;
-    YAML::Node root = YAML::LoadFile("/home/sylar/workspace/sylar/bin/conf/log.yml");
-    sylar::Config::LoadFromYaml(root);
+    YAML::Node root = YAML::LoadFile("/home/lipei/myweb/bin/conf/log.yml");
+	sylar::Config::LoadFromYaml(root);
     std::cout << "=============" << std::endl;
     std::cout << sylar::LoggerMgr::GetInstance()->toYamlString() << std::endl;
     std::cout << "=============" << std::endl;
@@ -211,7 +211,8 @@ void test_log() {
     system_log->setFormatter("%d - %m%n");
     SYLAR_LOG_INFO(system_log) << "hello system" << std::endl;
 }
-
+#endif
+#if 0
 void test_loadconf() {
     sylar::Config::LoadFromConfDir("conf");
 }
@@ -219,10 +220,10 @@ void test_loadconf() {
 
 int main(int argc, char** argv) {
     //test_yaml();
-   // SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "before: " ;
+    //SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "before: " ;
    // test_config();
-    test_class();
-    //test_log();
+    //test_class();
+    test_log();
 	/*
     sylar::EnvMgr::GetInstance()->init(argc, argv);
     test_loadconf();
@@ -230,13 +231,13 @@ int main(int argc, char** argv) {
     sleep(10);
     test_loadconf();
     return 0;
+*/
     sylar::Config::Visit([](sylar::ConfigVarBase::ptr var) {
         SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "name=" << var->getName()
                     << " description=" << var->getDescription()
                     << " typename=" << var->getTypeName()
                     << " value=" << var->toString();
     });
-*/
     
 	return 0;
 }

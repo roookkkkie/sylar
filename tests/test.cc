@@ -3,7 +3,7 @@
 #include "../sylar/util.h"
 
 void test(){
-	SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"before";
+	SYLAR_LOG_FATAL(SYLAR_LOG_ROOT())<<"test::before";
 
 }
 
@@ -14,8 +14,8 @@ int main(int argc, char** argv) {
     //logger->log(sylar::LogLevel::DEBUG,event);
 	
 	sylar::FileLogAppender::ptr file_appender(new sylar::FileLogAppender("./log.txt"));
-    sylar::LogFormatter::ptr fmt(new sylar::LogFormatter("%d%T%p%T%m%n"));
-    file_appender->setFormatter(fmt);
+    //sylar::LogFormatter::ptr fmt(new sylar::LogFormatter("%d%T%p%T%m%n"));
+    //file_appender->setFormatter(fmt);
     file_appender->setLevel(sylar::LogLevel::ERROR);
 
     logger->addAppender(file_appender);
@@ -24,7 +24,8 @@ int main(int argc, char** argv) {
     //event->getSS() << "hello sylar log";
     //logger->log(sylar::LogLevel::DEBUG, event);
     //std::cout << "hello sylar log" << std::endl;
-	SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"before";
+	//SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"main::before";
+	//SYLAR_LOG_FATAL(SYLAR_LOG_ROOT())<<"main::before";
 	SYLAR_LOG_INFO(logger) << "test macro";
 	SYLAR_LOG_ERROR(logger) << "test macro error";
 

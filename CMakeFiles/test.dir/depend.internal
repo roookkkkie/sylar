@@ -4,5 +4,6 @@
 CMakeFiles/test.dir/tests/test.cc.o
  /home/lipei/myweb/sylar/log.h
  /home/lipei/myweb/sylar/singleton.h
+ /home/lipei/myweb/sylar/thread.h
  /home/lipei/myweb/sylar/util.h
  /home/lipei/myweb/tests/test.cc

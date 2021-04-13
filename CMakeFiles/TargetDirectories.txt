@@ -1,5 +1,8 @@
 /home/lipei/myweb/CMakeFiles/rebuild_cache.dir
+/home/lipei/myweb/CMakeFiles/test_scheduler.dir
+/home/lipei/myweb/CMakeFiles/test_fiber.dir
 /home/lipei/myweb/CMakeFiles/test_config.dir
 /home/lipei/myweb/CMakeFiles/edit_cache.dir
+/home/lipei/myweb/CMakeFiles/test_thread.dir
 /home/lipei/myweb/CMakeFiles/test.dir
 /home/lipei/myweb/CMakeFiles/sylar.dir
