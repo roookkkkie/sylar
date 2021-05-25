@@ -3,7 +3,7 @@
 
 #include"thread.h"
 #include"fiber.h"
-#include"marco.h"
+#include"macro.h"
 #include<memory.h>
 #include<vector>
 #include<list>
@@ -46,7 +46,8 @@ namespace sylar{
 						while(begin!=end){
 							//取的是指针的地址，会执行swap操作
 							//此处取||是需要将第一次放tickle的值保存到放完
-							need_tickle = schduleNoLock(&*begin)||need_tickle;
+							need_tickle = scheduleNoLock(&*begin,-1)||need_tickle;
+							++begin;
 						}
 						if(need_tickle){
 							tickle();
@@ -54,6 +55,8 @@ namespace sylar{
 					}
 				}
 
+			void switchTo(int thread = -1);
+			std::ostream& dump(std::ostream& os);
 
 		protected:
 			virtual void tickle();
@@ -61,6 +64,7 @@ namespace sylar{
 			virtual bool stopping();
 			void setThis();
 			virtual void idle();
+			bool hasIdleThreads() {return m_idleThreadCount >0;}
 		private:
 			template<class FiberOrCb>
 				bool scheduleNoLock(FiberOrCb fc,int thread){
@@ -121,6 +125,13 @@ namespace sylar{
 			bool m_autoStop = false;
 			int m_rootThread = 0;
 
+	};
+	class SchedulerSwitcher : public Noncopyable {
+		public:
+			SchedulerSwitcher(Scheduler* target = nullptr);
+			~SchedulerSwitcher();
+		private:
+			Scheduler* m_caller;
 	};
 
 

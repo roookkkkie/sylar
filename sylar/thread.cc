@@ -4,7 +4,9 @@
 #include<iostream>
 
 namespace sylar{
+	//要拿到当前线程需要定义一个线程局部变量，指向当前线程
 	static thread_local Thread* t_thread = nullptr;
+	//当前线程名称
 	static thread_local std::string  t_thread_name  = "UNKNOW";
 
 	static sylar::Logger::ptr g_logger = SYLAR_LOG_NAME("system");
@@ -39,6 +41,9 @@ namespace sylar{
 	}
 
 	void Thread::SetName(const std::string& name){
+		if(name.empty()) {
+			return;
+		}
 		if(t_thread){
 			t_thread->m_name = name;
 		}
@@ -62,6 +67,7 @@ namespace sylar{
 
 	Thread::~Thread(){
 		if(m_thread){
+
 			pthread_detach(m_thread);
 		}
 	}
@@ -78,13 +84,17 @@ namespace sylar{
 	}
 
 	void* Thread::run(void* arg){
+		//进入线程
 		Thread* thread = (Thread*)arg;
+		//设置局部静态变量
 		t_thread = thread;
 		t_thread_name = thread->m_name;
 		thread->m_id = sylar::GetThreadId();
+		//给线程命名
 		pthread_setname_np(pthread_self(),thread->m_name.substr(0,15).c_str());
 
 		std::function<void()> cb;
+		//与线程里面的参数 swap 防止函数内部的智能指针不会被释放
 		cb.swap(thread->m_cb);
 		//等待初始化完成再将线程唤醒
 		thread->m_semaphore.notify();

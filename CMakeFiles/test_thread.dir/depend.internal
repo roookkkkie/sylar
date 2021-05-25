@@ -6,7 +6,8 @@ CMakeFiles/test_thread.dir/tests/test_thread.cc.o
  sylar/config.h
  sylar/fiber.h
  sylar/log.h
- sylar/marco.h
+ sylar/macro.h
+ sylar/noncopyable.h
  sylar/scheduler.h
  sylar/singleton.h
  sylar/sylar.h

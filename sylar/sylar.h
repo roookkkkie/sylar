@@ -1,7 +1,7 @@
 #ifndef __SYLAR_SYLAR_H__
 #define __SYLAR_SYLAR_H__
 
-#include"marco.h"
+#include"macro.h"
 #include"config.h"
 #include"log.h"
 #include"thread.h"

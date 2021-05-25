@@ -31,6 +31,7 @@ sylar::ConfigVar<std::map<std::string, int> >::ptr g_str_int_map_value_config =
 
 sylar::ConfigVar<std::unordered_map<std::string, int> >::ptr g_str_int_umap_value_config =
     sylar::Config::Lookup("system.str_int_umap", std::unordered_map<std::string, int>{{"k",2}}, "system str int map");
+//输出yaml的内容
 void print_yaml(const YAML::Node& node, int level) {
     if(node.IsScalar()) {
         SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << std::string(level * 4, ' ')
@@ -53,6 +54,7 @@ void print_yaml(const YAML::Node& node, int level) {
         }
     }
 }
+//test_yaml函数
 void test_yaml() {
     YAML::Node root = YAML::LoadFile("/home/lipei/myweb/bin/conf/log.yml");
     print_yaml(root, 0);
@@ -62,6 +64,8 @@ void test_yaml() {
    // SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << root["logs"].IsDefined();
     SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << root;
 }
+
+//test_config函数
 void test_config() {
    // SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "before: " << g_int_value_config->getValue();
    // SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "before: " << g_float_value_config->toString();
@@ -105,6 +109,7 @@ void test_config() {
     XX_M(g_str_int_umap_value_config, str_int_umap, after);
 }
 
+//对自定义类型的测试
 class  Person {
 public:
     Person() {};
@@ -157,7 +162,7 @@ public:
     }
 };
 
-}
+}  
 
 sylar::ConfigVar<Person>::ptr g_person =
     sylar::Config::Lookup("class.person", Person(), "system person");
@@ -168,6 +173,7 @@ sylar::ConfigVar<std::map<std::string, Person> >::ptr g_person_map =
 sylar::ConfigVar<std::map<std::string, std::vector<Person> > >::ptr g_person_vec_map =
     sylar::Config::Lookup("class.vec_map", std::map<std::string, std::vector<Person> >(), "system person");
 
+//测试自定义类型和yaml的转换
 void test_class() {
     SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "before: " << g_person->getValue().toString() << " - " << g_person->toString();
 
@@ -195,7 +201,7 @@ void test_class() {
     SYLAR_LOG_INFO(SYLAR_LOG_ROOT()) << "after: " << g_person_vec_map->toString();
 }
 
-#if 1
+//测试log日志
 void test_log() {
     static sylar::Logger::ptr system_log = SYLAR_LOG_NAME("system");
     SYLAR_LOG_INFO(system_log) << "hello system" << std::endl;
@@ -211,7 +217,7 @@ void test_log() {
     system_log->setFormatter("%d - %m%n");
     SYLAR_LOG_INFO(system_log) << "hello system" << std::endl;
 }
-#endif
+
 #if 0
 void test_loadconf() {
     sylar::Config::LoadFromConfDir("conf");

@@ -6,20 +6,20 @@
 #include<pthread.h>
 #include<semaphore.h>
 #include<atomic>
+#include"fiber.h"
+#include<list>
+#include"noncopyable.h"
 
 namespace sylar{
+
 	//信号量
-	class Semaphore{
+	class Semaphore: Noncopyable{
 		public:
 			Semaphore(uint32_t count = 0);
 			~Semaphore();
 
 			void wait();
 			void notify();
-		private:
-			Semaphore(const Semaphore&) = delete;
-			Semaphore(const Semaphore&&) = delete;
-			Semaphore& operator=(const Semaphore&) = delete;
 		private:
 			sem_t m_semaphore;
 
@@ -123,7 +123,7 @@ namespace sylar{
 		};
 
 	//互斥量
-	class Mutex{
+	class Mutex: Noncopyable{
 		public:
 			typedef ScopedLockImpl<Mutex> Lock;
 			Mutex(){
@@ -147,7 +147,7 @@ namespace sylar{
 
 	};
 
-	class NullMutex{
+	class NullMutex: Noncopyable{
 		public:
 			typedef ScopedLockImpl<NullMutex> Lock;
 			NullMutex(){}
@@ -157,7 +157,7 @@ namespace sylar{
 	};
 
 	//读写锁
-	class RWMutex{
+	class RWMutex: Noncopyable{
 		public:
 			typedef ReadScopedLockImpl<RWMutex> ReadLock;
 			typedef WriteScopedLockImpl<RWMutex> WriteLock;
@@ -180,7 +180,7 @@ namespace sylar{
 			pthread_rwlock_t m_lock;
 	};
 
-	class NullRWMutex{
+	class NullRWMutex: Noncopyable{
 		public:
 			typedef ReadScopedLockImpl<NullRWMutex> ReadLock;
 			typedef WriteScopedLockImpl<NullRWMutex> WriteLock;
@@ -192,7 +192,7 @@ namespace sylar{
 	};
 
 	//自旋锁
-	class Spinlock{
+	class Spinlock: Noncopyable{
 		public:
 			typedef ScopedLockImpl<Spinlock> Lock;
 			Spinlock(){
@@ -213,7 +213,7 @@ namespace sylar{
 	};
 
 	//原子锁
-	class CASLock{
+	class CASLock: Noncopyable{
 		public:
 			typedef ScopedLockImpl<CASLock> Lock;
 			CASLock(){
@@ -232,8 +232,28 @@ namespace sylar{
 		private:
 			volatile std::atomic_flag m_mutex;
 	};
+/*
+	class Scheduler;
+	class FiberSemaphore : Noncopyable {
+		public:
+			typedef Spinlock MutexType;
 
-	class Thread{
+			FiberSemaphore(size_t initial_concurrency = 0);
+			~FiberSemaphore();
+
+			bool tryWait();
+			void wait();
+			void notify();
+
+			size_t getConcurrency() const { return m_concurrency;}
+			void reset() { m_concurrency = 0;}
+		private:
+			MutexType m_mutex;
+			std::list<std::pair<Scheduler*, Fiber::ptr> > m_waiters;
+			size_t m_concurrency;
+	};
+*/
+	class Thread: Noncopyable{
 		public:
 			typedef std::shared_ptr<Thread> ptr;
 			Thread(std::function<void()> cb,const std::string& name);
@@ -245,14 +265,16 @@ namespace sylar{
 			void join();
 			static Thread* GetThis();
 			static const std::string& GetName();
+			//静态的写方法，主线程不是自己创建的，如果name必须创建时拿到
+			//就没办法给主线程命名，取变量为线程局部变量，不用类生成，局部变量也存在
 			static void SetName(const std::string& name);
 		private:
-			Thread(const Thread&) = delete;
-			Thread(const Thread&&) = delete;
-			Thread& operator=(Thread&) = delete;
+			//静态的执行方法
 			static void* run(void* arg);
 		private:
+			//linux 在top命令里的线程号 
 			pid_t m_id = -1;
+			//pthread线程Id
 			pthread_t m_thread = 0;
 			std::function<void()> m_cb;
 			std::string m_name;

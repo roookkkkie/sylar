@@ -38,9 +38,11 @@ namespace sylar{
 	};
 
 	//F from_type T to Type
+	//模板仿函数
 	template<class F,class T>
 		class LexicalCast{
 			public:
+				//传入常量引用，传出值
 				T operator()(const F& v){
 					return boost::lexical_cast<T>(v);
 				}
@@ -328,29 +330,36 @@ namespace sylar{
 		public:
 			typedef std::map<std::string,ConfigVarBase::ptr> ConfigVarMap;
 			typedef RWMutex RWMutexType;
-
+			
 			template<class T>
 				static typename ConfigVar<T>::ptr Lookup(const std::string name,
 						const T& default_value,const std::string& description =""){
 					RWMutexType::WriteLock lock(GetMutex());
+					//根据name寻找对应的configvar<T>::ptr	
 					auto it = GetDatas().find(name);
+					//如果存在name
 					if(it!=GetDatas().end()){
+						//智能指针版的dynamic_cast
 						auto tmp = std::dynamic_pointer_cast<ConfigVar<T> >(it->second);
+						//如果转换的派生类configvar<T>存在
 						if(tmp){
 							SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"Lookup name = "<<name<<" exists";
 							return tmp;
-						}else{
+						}
+						//如果不存在，打印错误
+						else{
 							SYLAR_LOG_ERROR(SYLAR_LOG_ROOT())<<"Lookup name = "<<name<<" exists but type not "<<typeid(T).name()<<" real type = "<<(it->second)->getTypeName()<<" "<<it->second->toString();
 							return nullptr;
 						}
 					}
-
+					//如果不存在name则新建
 					if(name.find_first_not_of("abcdefghijklmnopqrstuvwxyz._12345678")!=std::string::npos){
 						SYLAR_LOG_INFO(SYLAR_LOG_ROOT())<<"Lookup name invalid "<<name;
 						throw std::invalid_argument(name);
 					}
 					typename ConfigVar<T>::ptr v(new ConfigVar<T>(name,default_value,description));
 					GetDatas()[name] = v;
+					//返回新建的指针
 					return v;
 				}
 			template<class T>

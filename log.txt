@@ -26,3 +26,9 @@
 2021-04-12 16:53:53	8044	0	[ERROR]	[root]tests/test.cc:32	test macro fmt error aa
 2021-04-12 22:50:58	12754	UNKNOW	0	[ERROR]	[root]	tests/test.cc:30	test macro error
 2021-04-12 22:50:58	12754	UNKNOW	0	[ERROR]	[root]	tests/test.cc:32	test macro fmt error aa
+2021-04-13 22:26:27	28320	UNKNOW	0	[ERROR]	[root]	tests/test.cc:30	test macro error
+2021-04-13 22:26:27	28320	UNKNOW	0	[ERROR]	[root]	tests/test.cc:32	test macro fmt error aa
+2021-04-14 11:22:46	43124	UNKNOW	0	[ERROR]	[root]	tests/test.cc:30	test macro error
+2021-04-14 11:22:46	43124	UNKNOW	0	[ERROR]	[root]	tests/test.cc:32	test macro fmt error aa
+2021-04-18 15:45:48	39325	UNKNOW	0	[ERROR]	[root]	tests/test.cc:30	test macro error
+2021-04-18 15:45:48	39325	UNKNOW	0	[ERROR]	[root]	tests/test.cc:32	test macro fmt error aa

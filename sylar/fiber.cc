@@ -2,7 +2,7 @@
 #include<atomic>
 #include"config.h"
 #include"log.h"
-#include"marco.h"
+#include"macro.h"
 #include"scheduler.h"
 
 namespace sylar{
@@ -45,20 +45,20 @@ namespace sylar{
 	}
 
 	//将线程的上下文赋给协程
-	Fiber::Fiber(){//私有的构造函数,这个函数执行是main协程
+	Fiber::Fiber(){//私有的构造函数,获取当前线程的上下文
 		m_state = EXEC;
 		SetThis(this);
 
-		//协程获取上下文
+		//协程获取当前线程的上下文，main协程
 		if(getcontext(&m_ctx)){
 			SYLAR_ASSERT2(false,"getcontext");
 		}
 
 		++s_fiber_count;
-		SYLAR_LOG_DEBUG(g_logger)<<"Fiber::Fiber";
+		SYLAR_LOG_DEBUG(g_logger)<<"Fiber::Fiber main";
 	}
 
-	//主协程创建协程
+	//真正创建协程
 	Fiber::Fiber(std::function<void()>cb,size_t stacksize,bool use_caller):
 		m_id(++s_fiber_id),
 		m_cb(cb){
@@ -75,7 +75,7 @@ namespace sylar{
 			m_ctx.uc_stack.ss_sp = m_stack;
 			m_ctx.uc_stack.ss_size = m_stacksize;
 			if(!use_caller){
-				//将当前上下文设置好，将Mainfunc关联进去
+				//将当前上下文设置好，将Mainfunc关联进去,swapcontext时会调用manfunc
 				makecontext(&m_ctx,&Fiber::MainFunc,0);
 			}else{
 				makecontext(&m_ctx,&Fiber::CallerMainFunc,0);	
@@ -129,6 +129,7 @@ namespace sylar{
 		m_state = EXEC;
 		//协程的交换操作	
 		//	if(swapcontext(&t_threadFiber->m_ctx,&m_ctx)){//与当前线程的交换操作
+		//	变成与主协程交换上下文
 		if(swapcontext(&Scheduler::GetMainFiber()->m_ctx,&m_ctx)){
 			SYLAR_ASSERT2(false,"swapcontext");	
 		}
@@ -188,6 +189,7 @@ namespace sylar{
 	void Fiber::YieldToReady(){
 		//将当前执行的协程切换为ready状态，并切换回主线程
 		Fiber::ptr cur = GetThis();
+    SYLAR_ASSERT(cur->m_state == EXEC);
 		cur->m_state = READY;
 		cur->swapOut();
 	}
@@ -195,14 +197,15 @@ namespace sylar{
 	void Fiber::YieldToHold(){
 		//将当前执行的协程切换为hold状态，并切换回主线程
 		Fiber::ptr cur = GetThis();
-		cur->m_state = HOLD;
+    SYLAR_ASSERT(cur->m_state == EXEC);
+	//	cur->m_state = HOLD;
 		cur->swapOut();	
 	}
 	//总协程数
 	uint64_t Fiber::TotalFibers(){
 		return s_fiber_count;
 	}
-
+	//协程执行自己的cb
 	void Fiber:: MainFunc(){
 		Fiber::ptr cur = GetThis();
 		SYLAR_ASSERT(cur);
