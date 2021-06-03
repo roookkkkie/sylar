@@ -45,10 +45,15 @@ file(REMOVE_RECURSE
   "CMakeFiles/sylar.dir/sylar/thread.cc.o.d"
   "CMakeFiles/sylar.dir/sylar/timer.cc.o"
   "CMakeFiles/sylar.dir/sylar/timer.cc.o.d"
+  "CMakeFiles/sylar.dir/sylar/uri.rl.cc.o"
+  "CMakeFiles/sylar.dir/sylar/uri.rl.cc.o.d"
   "CMakeFiles/sylar.dir/sylar/util.cc.o"
   "CMakeFiles/sylar.dir/sylar/util.cc.o.d"
   "lib/libsylar.pdb"
   "lib/libsylar.so"
+  "sylar/http/http11_parser.rl.cc"
+  "sylar/http/httpclient_parser.rl.cc"
+  "sylar/uri.rl.cc"
 )
 
 # Per-language clean rules from dependency scanning.

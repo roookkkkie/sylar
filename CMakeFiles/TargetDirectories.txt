@@ -1,3 +1,4 @@
+/home/lipei/myweb/CMakeFiles/test_uri.dir
 /home/lipei/myweb/CMakeFiles/test_http_server.dir
 /home/lipei/myweb/CMakeFiles/echo_server.dir
 /home/lipei/myweb/CMakeFiles/test_tcp_server.dir

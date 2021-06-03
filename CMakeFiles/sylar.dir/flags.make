@@ -38,9 +38,9 @@ CXX_FLAGS =  -lyaml-cpp -rdynamic -pthread -lm -O0 -ggdb -std=c++11 -Wall -Wno-d
 
 # Custom defines: CMakeFiles/sylar.dir/sylar/http/http_parser.cc.o_DEFINES = __FILE__="sylar/http/http_parser.cc"
 
-# Custom defines: CMakeFiles/sylar.dir/sylar/http/http11_parser.rl.cc.o_DEFINES = __FILE__="sylar/http/http11_parser.rl.cc"
+# Custom defines: CMakeFiles/sylar.dir/sylar/http/http11_parser.rl.cc.o_DEFINES = __FILE__="sylar/http/http11_parser.rl.cc";__FILE__="sylar/http/http11_parser.rl.cc"
 
-# Custom defines: CMakeFiles/sylar.dir/sylar/http/httpclient_parser.rl.cc.o_DEFINES = __FILE__="sylar/http/httpclient_parser.rl.cc"
+# Custom defines: CMakeFiles/sylar.dir/sylar/http/httpclient_parser.rl.cc.o_DEFINES = __FILE__="sylar/http/httpclient_parser.rl.cc";__FILE__="sylar/http/httpclient_parser.rl.cc"
 
 # Custom defines: CMakeFiles/sylar.dir/sylar/tcp_server.cc.o_DEFINES = __FILE__="sylar/tcp_server.cc"
 
@@ -55,4 +55,6 @@ CXX_FLAGS =  -lyaml-cpp -rdynamic -pthread -lm -O0 -ggdb -std=c++11 -Wall -Wno-d
 # Custom defines: CMakeFiles/sylar.dir/sylar/http/servlet.cc.o_DEFINES = __FILE__="sylar/http/servlet.cc"
 
 # Custom defines: CMakeFiles/sylar.dir/sylar/http/http_connection.cc.o_DEFINES = __FILE__="sylar/http/http_connection.cc"
+
+# Custom defines: CMakeFiles/sylar.dir/sylar/uri.rl.cc.o_DEFINES = __FILE__="sylar/uri.rl.cc"
 

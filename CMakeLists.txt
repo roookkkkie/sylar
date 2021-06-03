@@ -144,5 +144,10 @@ add_dependencies(test_http_connection sylar)
 force_redefine_file_macro_for_sources(test_http_connection) #__FILE__
 target_link_libraries(test_http_connection sylar ${LIB_LIB})
 
+add_executable(test_uri tests/test_uri.cc)
+add_dependencies(test_uri sylar)
+force_redefine_file_macro_for_sources(test_uri) #__FILE__
+target_link_libraries(test_uri sylar ${LIB_LIB})
+
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)

@@ -31,6 +31,7 @@ set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/lipei/myweb/sylar/tcp_server.cc" "CMakeFiles/sylar.dir/sylar/tcp_server.cc.o" "gcc" "CMakeFiles/sylar.dir/sylar/tcp_server.cc.o.d"
   "/home/lipei/myweb/sylar/thread.cc" "CMakeFiles/sylar.dir/sylar/thread.cc.o" "gcc" "CMakeFiles/sylar.dir/sylar/thread.cc.o.d"
   "/home/lipei/myweb/sylar/timer.cc" "CMakeFiles/sylar.dir/sylar/timer.cc.o" "gcc" "CMakeFiles/sylar.dir/sylar/timer.cc.o.d"
+  "/home/lipei/myweb/sylar/uri.rl.cc" "CMakeFiles/sylar.dir/sylar/uri.rl.cc.o" "gcc" "CMakeFiles/sylar.dir/sylar/uri.rl.cc.o.d"
   "/home/lipei/myweb/sylar/util.cc" "CMakeFiles/sylar.dir/sylar/util.cc.o" "gcc" "CMakeFiles/sylar.dir/sylar/util.cc.o.d"
   )
 
