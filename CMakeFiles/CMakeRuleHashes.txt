@@ -1,0 +1,4 @@
+# Hashes of file build rules.
+317926e371cde9b3535a875bbde14a04 sylar/http/http11_parser.rl.cc
+f39711fe750568ef43f9bb5444c80d7e sylar/http/httpclient_parser.rl.cc
+53759397277628e82292ae8eda1f100b sylar/uri.rl.cc
