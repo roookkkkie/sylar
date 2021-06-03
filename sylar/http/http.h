@@ -338,12 +338,12 @@ public:
     /**
      * @brief 是否websocket
      */
-    bool isWebsocket() const { return m_websocket;}
+    //bool isWebsocket() const { return m_websocket;}
 
     /**
      * @brief 设置是否websocket
      */
-    void setWebsocket(bool v) { m_websocket = v;}
+    //////////////////void setWebsocket(bool v) { m_websocket = v;}
 
     /**
      * @brief 设置HTTP请求的头部MAP
@@ -484,13 +484,14 @@ public:
      * @param[in] def 默认值
      * @return 如果存在且转换成功返回true,否则失败val=def
      */
+   /*
     template<class T>
     bool checkGetParamAs(const std::string& key, T& val, const T& def = T()) {
         initQueryParam();
         initBodyParam();
         return checkGetAs(m_params, key, val, def);
     }
-
+    */
     /**
      * @brief 获取HTTP请求的请求参数
      * @tparam T 转换类型
@@ -498,13 +499,14 @@ public:
      * @param[in] def 默认值
      * @return 如果存在且转换成功返回对应的值,否则返回def
      */
+    /*
     template<class T>
     T getParamAs(const std::string& key, const T& def = T()) {
         initQueryParam();
         initBodyParam();
         return getAs(m_params, key, def);
     }
-
+    */
     /**
      * @brief 检查并获取HTTP请求的Cookie参数
      * @tparam T 转换类型
@@ -513,12 +515,13 @@ public:
      * @param[in] def 默认值
      * @return 如果存在且转换成功返回true,否则失败val=def
      */
+    /*
     template<class T>
     bool checkGetCookieAs(const std::string& key, T& val, const T& def = T()) {
         initCookies();
         return checkGetAs(m_cookies, key, val, def);
     }
-
+    */
     /**
      * @brief 获取HTTP请求的Cookie参数
      * @tparam T 转换类型
@@ -526,12 +529,13 @@ public:
      * @param[in] def 默认值
      * @return 如果存在且转换成功返回对应的值,否则返回def
      */
+    /*
     template<class T>
     T getCookieAs(const std::string& key, const T& def = T()) {
         initCookies();
         return getAs(m_cookies, key, def);
     }
-
+    */
     /**
      * @brief 序列化输出到流中
      * @param[in, out] os 输出流
@@ -546,10 +550,12 @@ public:
     std::string toString() const;
 
     void init();
+   /*
     void initParam();
     void initQueryParam();
     void initBodyParam();
     void initCookies();
+    */
 private:
     /// HTTP方法
     HttpMethod m_method;
@@ -558,7 +564,7 @@ private:
     /// 是否自动关闭
     bool m_close;
     /// 是否为websocket
-    bool m_websocket;
+   // bool m_websocket;
 
     uint8_t m_parserParamFlag;
     /// 请求路径
@@ -665,12 +671,12 @@ public:
     /**
      * @brief 是否websocket
      */
-    bool isWebsocket() const { return m_websocket;}
+    //bool isWebsocket() const { return m_websocket;}
 
     /**
      * @brief 设置是否websocket
      */
-    void setWebsocket(bool v) { m_websocket = v;}
+    //void setWebsocket(bool v) { m_websocket = v;}
 
     /**
      * @brief 获取响应头部参数
@@ -742,7 +748,7 @@ private:
     /// 是否自动关闭
     bool m_close;
     /// 是否为websocket
-    bool m_websocket;
+    //bool m_websocket;
     /// 响应消息体
     std::string m_body;
     /// 响应原因
@@ -750,7 +756,7 @@ private:
     /// 响应头部MAP
     MapType m_headers;
 
-    std::vector<std::string> m_cookies;
+    //std::vector<std::string> m_cookies;
 };
 
 /**

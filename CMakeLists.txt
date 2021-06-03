@@ -1,4 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
+set(CMAKE_C_COMPILER /apps/lipei/bin/gcc)
+set(CMAKE_CXX_COMPILER /apps/lipei/bin/g++)
 project(sylar)
 
 #include (/usr/bin/cmake/utils.cmake)
@@ -14,24 +16,36 @@ include_directories(/usr/local/include)
 link_directories(/usr/local/lib)
 
 set(LIB_SRC
-	sylar/log.cc
-	sylar/util.cc
-	sylar/config.cc
-	sylar/thread.cc
-	sylar/fiber.cc
-	sylar/scheduler.cc
-	sylar/iomanager.cc
-	sylar/timer.cc
-	sylar/fd_manager.cc
-	sylar/hook.cc
-	sylar/address.cc
-	sylar/socket.cc
-	sylar/bytearray.cc
-	sylar/http/http.cc
-	sylar/http/http_parser.cc
-	sylar/http/http11_parser.rl.cc
-	sylar/http/httpclient_parser.rl.cc
-	)
+    sylar/log.cc
+    sylar/util.cc
+    sylar/config.cc
+    sylar/thread.cc
+    sylar/fiber.cc
+    sylar/scheduler.cc
+    sylar/iomanager.cc
+    sylar/timer.cc
+    sylar/fd_manager.cc
+    sylar/hook.cc
+    sylar/address.cc
+    sylar/socket.cc
+    sylar/bytearray.cc
+    sylar/http/http.cc
+    sylar/http/http_parser.cc
+    sylar/http/http11_parser.rl.cc
+    sylar/http/httpclient_parser.rl.cc
+    sylar/tcp_server.cc
+    sylar/stream.cc
+    sylar/socket_stream.cc
+    sylar/http/http_session.cc
+    sylar/http/http_server.cc
+    sylar/http/servlet.cc
+    sylar/http/http_connection.cc
+    )
+
+ragelmaker(sylar/http/http11_parser.rl LIB_SRC ${CMAKE_CURRENT_SOURCE_DIR}/sylar/http)
+ragelmaker(sylar/http/httpclient_parser.rl LIB_SRC ${CMAKE_CURRENT_SOURCE_DIR}/sylar/http)
+
+ragelmaker(sylar/uri.rl LIB_SRC ${CMAKE_CURRENT_SOURCE_DIR}/sylar)
 
 add_library(sylar SHARED ${LIB_SRC})
 force_redefine_file_macro_for_sources(sylar) #__FILE__
@@ -44,12 +58,11 @@ force_redefine_file_macro_for_sources(sylar) #__FILE__
 #set(LIBS ${LIBS} ${PTHREAD})
 
 set(LIB_LIB
-	sylar
-	dl
-	pthread
-	/usr/local/lib/libyaml-cpp.a
-	/usr/lib/x86_64-linux-gnu/libjsoncpp.a
-	)
+    sylar
+    dl
+    pthread
+    /usr/local/lib64/libyaml-cpp.a
+    )
 
 add_executable(test tests/test.cc)
 add_dependencies(test sylar)
@@ -108,8 +121,28 @@ target_link_libraries(test_http sylar ${LIB_LIB})
 
 add_executable(test_http_parser tests/test_http_parser.cc)
 add_dependencies(test_http_parser sylar)
-force_redefine_file_macro_for_sources(test_http) #__FILE__
+force_redefine_file_macro_for_sources(test_http_parser) #__FILE__
 target_link_libraries(test_http_parser sylar ${LIB_LIB})
+
+add_executable(test_tcp_server tests/test_tcp_server.cc)
+add_dependencies(test_tcp_server sylar)
+force_redefine_file_macro_for_sources(test_tcp_server) #__FILE__
+target_link_libraries(test_tcp_server sylar ${LIB_LIB})
+
+add_executable(echo_server examples/echo_server.cc)
+add_dependencies(echo_server sylar)
+force_redefine_file_macro_for_sources(echo_server) #__FILE__
+target_link_libraries(echo_server sylar ${LIB_LIB})
+
+add_executable(test_http_server tests/test_http_server.cc)
+add_dependencies(test_http_server sylar)
+force_redefine_file_macro_for_sources(test_http_server) #__FILE__
+target_link_libraries(test_http_server sylar ${LIB_LIB})
+
+add_executable(test_http_connection tests/test_http_connection.cc)
+add_dependencies(test_http_connection sylar)
+force_redefine_file_macro_for_sources(test_http_connection) #__FILE__
+target_link_libraries(test_http_connection sylar ${LIB_LIB})
 
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)

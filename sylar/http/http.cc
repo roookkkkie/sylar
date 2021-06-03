@@ -59,7 +59,7 @@ HttpRequest::HttpRequest(uint8_t version, bool close)
     :m_method(HttpMethod::GET)
     ,m_version(version)
     ,m_close(close)
-    ,m_websocket(false)
+   // ,m_websocket(false)
     ,m_parserParamFlag(0)
     ,m_path("/") {
 }
@@ -78,15 +78,15 @@ std::shared_ptr<HttpResponse> HttpRequest::createResponse() {
 
 std::string HttpRequest::getParam(const std::string& key
                             ,const std::string& def) {
-    initQueryParam();
-    initBodyParam();
+    //initQueryParam();
+    //initBodyParam();
     auto it = m_params.find(key);
     return it == m_params.end() ? def : it->second;
 }
 
 std::string HttpRequest::getCookie(const std::string& key
                             ,const std::string& def) {
-    initCookies();
+    //initCookies();
     auto it = m_cookies.find(key);
     return it == m_cookies.end() ? def : it->second;
 }
@@ -127,8 +127,8 @@ bool HttpRequest::hasHeader(const std::string& key, std::string* val) {
 }
 
 bool HttpRequest::hasParam(const std::string& key, std::string* val) {
-    initQueryParam();
-    initBodyParam();
+    //initQueryParam();
+    //initBodyParam();
     auto it = m_params.find(key);
     if(it == m_params.end()) {
         return false;
@@ -140,7 +140,7 @@ bool HttpRequest::hasParam(const std::string& key, std::string* val) {
 }
 
 bool HttpRequest::hasCookie(const std::string& key, std::string* val) {
-    initCookies();
+    //initCookies();
     auto it = m_cookies.find(key);
     if(it == m_cookies.end()) {
         return false;
@@ -173,11 +173,12 @@ std::ostream& HttpRequest::dump(std::ostream& os) const {
        << "."
        << ((uint32_t)(m_version & 0x0F))
        << "\r\n";
-    if(!m_websocket) {
+    //if(!m_websocket) {
         os << "connection: " << (m_close ? "close" : "keep-alive") << "\r\n";
-    }
+   // }
     for(auto& i : m_headers) {
-        if(!m_websocket && strcasecmp(i.first.c_str(), "connection") == 0) {
+        if(//!m_websocket &&
+                strcasecmp(i.first.c_str(), "connection") == 0) {
             continue;
         }
         os << i.first << ": " << i.second << "\r\n";
@@ -202,7 +203,7 @@ void HttpRequest::init() {
         }
     }
 }
-
+/*
 void HttpRequest::initParam() {
     initQueryParam();
     initBodyParam();
@@ -261,13 +262,14 @@ void HttpRequest::initCookies() {
     PARSE_PARAM(cookie, m_cookies, ';', sylar::StringUtil::Trim);
     m_parserParamFlag |= 0x4;
 }
-
+*/
 
 HttpResponse::HttpResponse(uint8_t version, bool close)
     :m_status(HttpStatus::OK)
     ,m_version(version)
     ,m_close(close)
-    ,m_websocket(false) {
+   // ,m_websocket(false)
+   {
 }
 
 std::string HttpResponse::getHeader(const std::string& key, const std::string& def) const {
@@ -287,7 +289,7 @@ void HttpResponse::setRedirect(const std::string& uri) {
     m_status = HttpStatus::FOUND;
     setHeader("Location", uri);
 }
-
+/*
 void HttpResponse::setCookie(const std::string& key, const std::string& val,
                              time_t expired, const std::string& path,
                              const std::string& domain, bool secure) {
@@ -307,7 +309,7 @@ void HttpResponse::setCookie(const std::string& key, const std::string& val,
     }
     m_cookies.push_back(ss.str());
 }
-
+*/
 
 std::string HttpResponse::toString() const {
     std::stringstream ss;
@@ -327,17 +329,18 @@ std::ostream& HttpResponse::dump(std::ostream& os) const {
        << "\r\n";
 
     for(auto& i : m_headers) {
-        if(!m_websocket && strcasecmp(i.first.c_str(), "connection") == 0) {
+        if(//!m_websocket && 
+                strcasecmp(i.first.c_str(), "connection") == 0) {
             continue;
         }
         os << i.first << ": " << i.second << "\r\n";
     }
-    for(auto& i : m_cookies) {
-        os << "Set-Cookie: " << i << "\r\n";
-    }
-    if(!m_websocket) {
+   // for(auto& i : m_cookies) {
+   //     os << "Set-Cookie: " << i << "\r\n";
+   // }
+    //if(!m_websocket) {
         os << "connection: " << (m_close ? "close" : "keep-alive") << "\r\n";
-    }
+   // }
     if(!m_body.empty()) {
         os << "content-length: " << m_body.size() << "\r\n\r\n"
            << m_body;

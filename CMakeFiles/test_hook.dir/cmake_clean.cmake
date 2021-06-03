@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/test_hook.dir/tests/test_hook.cc.o"
+  "CMakeFiles/test_hook.dir/tests/test_hook.cc.o.d"
   "bin/test_hook"
   "bin/test_hook.pdb"
 )

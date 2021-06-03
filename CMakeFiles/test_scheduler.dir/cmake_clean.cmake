@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/test_scheduler.dir/tests/test_scheduler.cc.o"
+  "CMakeFiles/test_scheduler.dir/tests/test_scheduler.cc.o.d"
   "bin/test_scheduler"
   "bin/test_scheduler.pdb"
 )

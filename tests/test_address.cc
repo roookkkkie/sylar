@@ -17,7 +17,9 @@ void test() {
     }
 
     for(size_t i = 0; i < addrs.size(); ++i) {
-        SYLAR_LOG_INFO(g_logger) << i << " - " << addrs[i]->toString();
+        SYLAR_LOG_INFO(g_logger) << i << " - " 
+            //<<*addrs[i] ;
+            <<addrs[i]->toString();
     }
 /*
     auto addr = sylar::Address::LookupAny("localhost:4080");

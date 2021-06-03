@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/test_bytearray.dir/tests/test_bytearray.cc.o"
+  "CMakeFiles/test_bytearray.dir/tests/test_bytearray.cc.o.d"
   "bin/test_bytearray"
   "bin/test_bytearray.pdb"
 )

@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/test_http_parser.dir/tests/test_http_parser.cc.o"
+  "CMakeFiles/test_http_parser.dir/tests/test_http_parser.cc.o.d"
   "bin/test_http_parser"
   "bin/test_http_parser.pdb"
 )

@@ -196,7 +196,7 @@ namespace sylar{
 		return getAddr()->sa_family;
 	}
 
-	std::string Address::toString(){
+	std::string Address::toString()const{
 		std::stringstream ss;
 		insert(ss);
 		return ss.str();
@@ -520,10 +520,12 @@ namespace sylar{
 	std::ostream& UnixAddress::insert(std::ostream& os) const{
 		if(m_length > offsetof(sockaddr_un, sun_path)
 				&& m_addr.sun_path[0] == '\0') {
-			return os << "\\0" << std::string(m_addr.sun_path + 1,
+			 os << "\\0" << std::string(m_addr.sun_path + 1,
 					m_length - offsetof(sockaddr_un, sun_path) - 1);
+             return os;
 		}
-		return os << m_addr.sun_path;
+		os << m_addr.sun_path;
+        return os;
 	}
 
 	UnknownAddress::UnknownAddress(int family) {
@@ -551,4 +553,8 @@ namespace sylar{
 		os << "[UnknownAddress family=" << m_addr.sa_family << "]";
 		return os;
 	}
+    std::ostream& operator<<(std::ostream& os, const Address& addr) {
+         return addr.insert(os);
+     }
+
 }

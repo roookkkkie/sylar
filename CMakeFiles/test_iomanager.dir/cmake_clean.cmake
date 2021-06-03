@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/test_iomanager.dir/tests/test_iomanager.cc.o"
+  "CMakeFiles/test_iomanager.dir/tests/test_iomanager.cc.o.d"
   "bin/test_iomanager"
   "bin/test_iomanager.pdb"
 )
