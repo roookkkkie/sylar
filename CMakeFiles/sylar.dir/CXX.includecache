@@ -6,6 +6,18 @@
 
 #IncludeRegexTransform: 
 
+/home/lipei/myweb/sylar/config.cc
+config.h
+/home/lipei/myweb/sylar/config.h
+
+/home/lipei/myweb/sylar/config.h
+memory
+-
+sstream
+-
+boost/lexical_cast.hpp
+-
+
 /home/lipei/myweb/sylar/log.cc
 log.h
 /home/lipei/myweb/sylar/log.h
@@ -37,4 +49,8 @@ stdarg.h
 -
 map
 -
+singleton.h
+/home/lipei/myweb/sylar/singleton.h
+
+/home/lipei/myweb/sylar/singleton.h
 

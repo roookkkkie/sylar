@@ -24,6 +24,31 @@ namespace sylar{
 		return "UNKNOW";	
 	}
 
+	LogEventWrap::LogEventWrap(LogEvent::ptr e)
+		:m_event(e){
+
+		}
+	LogEventWrap::~LogEventWrap(){
+		m_event->getLogger()->log(m_event->getLevel(),m_event);	
+	}
+	void LogEvent::format(const char* fmt,...){
+		va_list al;
+		va_start(al,fmt);
+		format(fmt,al);
+		va_end(al);
+	}
+	void LogEvent::format(const char* fmt,va_list al){
+		char* buf = nullptr;
+		int len = vasprintf(&buf,fmt,al);
+		if(len!= -1){
+			m_ss<<std::string(buf,len);
+			free(buf);
+		}
+	}
+	std::stringstream& LogEventWrap::getSS(){
+		return m_event->getSS();
+	}
+
 	class MessageFormatItem:public LogFormatter::FormatItem{
 		public:
 			MessageFormatItem(const std::string &str = ""){}
@@ -125,8 +150,17 @@ namespace sylar{
 			std::string m_string;
 	};
 
-	LogEvent::LogEvent(const char* file,int32_t line,uint32_t elapse,uint32_t threadId,uint32_t fiberId,uint64_t time):
-		m_file(file),m_line(line),m_elapse(elapse),m_threadId(threadId),m_fiberId(fiberId),m_time(time){}
+	LogEvent::LogEvent(std::shared_ptr<Logger> logger,LogLevel::Level level,const char* file,int32_t line,uint32_t elapse,uint32_t threadId,uint32_t fiberId,uint64_t time):
+		m_file(file),
+		m_line(line),
+		m_elapse(elapse),
+		m_threadId(threadId),
+		m_fiberId(fiberId),
+		m_time(time),
+		m_logger(logger),
+		m_level(level){
+		};
+	//LogEvent::~LogEvent();
 	Logger::Logger(const std::string& name):
 		m_name(name),
 		m_level(LogLevel::DEBUG){
@@ -171,7 +205,10 @@ namespace sylar{
 		log(LogLevel::FATAL,event);
 	}	
 
-	FileLogAppender::FileLogAppender(const std::string& filename):m_filename(filename){}
+	FileLogAppender::FileLogAppender(const std::string& filename):
+		m_filename(filename){
+			reopen();	
+		}
 	void  StdoutLogAppender::log(std::shared_ptr<Logger> logger,LogLevel::Level level,LogEvent::ptr event){
 		if(level>=m_level){
 			std::cout<<m_formatter->format(logger,level,event);
@@ -304,5 +341,17 @@ namespace sylar{
 			//std::cout<<"("<<std::get<0>(i)<<") - ("<<std::get<1>(i)<<") - ("<<std::get<2>(i)<<")"<<std::endl;
 		}
 	}
+	LoggerManager::LoggerManager(){
+		m_root.reset(new Logger);
+		m_root->addAppender(LogAppender::ptr(new StdoutLogAppender));
+	}
+	Logger::ptr LoggerManager::getLogger(const std::string& name){
+		auto it = m_loggers.find(name);
+		return it==m_loggers.end()?m_root:it->second;
+	}
+
+	void LoggerManager::init(){
+	}
+
 }
 
